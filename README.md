@@ -1,6 +1,6 @@
 <div align="center">
 
-# Advanced AHB-Full 4-Master / 8-Slave Interconnect
+⬜ Advanced AHB-Full 4-Master / 8-Slave Interconnect
 🌟 Batch Round-Robin Arbiter · Address-Decoding Interconnect · Self-Checking UVM Verification
 
 ![SystemVerilog](https://img.shields.io/badge/HDL-Verilog%20%7C%20SystemVerilog-blue)
@@ -71,7 +71,7 @@
 
 ⬜ 1. Project Overview
 
-Modern SoCs rarely have a single bus master. CPUs, DMA engines and accelerators all compete for the same peripherals and memories, so the bus needs **arbitration**, **address decoding** and **flow control** that work correctly while several masters are active.
+Modern SoCs rarely have a single bus master. CPUs, DMA engines and accelerators all compete for the same peripherals and memories, so the bus needs **arbitration**, address **decoding** and **flow control** that work correctly while several masters are active.
 
 This project implements that environment as an **AMBA AHB-Full multi-master, multi-slave bus subsystem**:
 
