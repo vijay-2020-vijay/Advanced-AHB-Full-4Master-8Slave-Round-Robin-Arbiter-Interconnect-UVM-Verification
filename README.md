@@ -1,7 +1,7 @@
 <div align="center">
 
 # Advanced AHB-Full 4-Master / 8-Slave Interconnect
-### Batch Round-Robin Arbiter · Address-Decoding Interconnect · Self-Checking UVM Verification
+🌟 Batch Round-Robin Arbiter · Address-Decoding Interconnect · Self-Checking UVM Verification
 
 ![SystemVerilog](https://img.shields.io/badge/HDL-Verilog%20%7C%20SystemVerilog-blue)
 ![UVM](https://img.shields.io/badge/Verification-UVM-orange)
@@ -13,7 +13,7 @@
 
 <div align="center">
 
-# 📥 [**DOWNLOAD FULL PROJECT**](https://drive.google.com/drive/folders/1PzCzIiuY8I9nX2K5JqRZ5S79b1RLSWTV?usp=sharing)
+ 📥 [**DOWNLOAD FULL PROJECT**](https://drive.google.com/drive/folders/1PzCzIiuY8I9nX2K5JqRZ5S79b1RLSWTV?usp=sharing)
 
 [![Download](https://img.shields.io/badge/Google%20Drive-DOWNLOAD%20NOW-brightgreen?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/1PzCzIiuY8I9nX2K5JqRZ5S79b1RLSWTV?usp=sharing)
 
@@ -40,7 +40,7 @@
 
 ---
 
-## Table of Contents
+⬜ Table of Contents
 
 1. [Project Overview](#1-project-overview)
 2. [Project at a Glance](#2-project-at-a-glance)
@@ -69,7 +69,7 @@
 
 ---
 
-## 1. Project Overview
+⬜ 1. Project Overview
 
 Modern SoCs rarely have a single bus master. CPUs, DMA engines and accelerators all compete for the same peripherals and memories, so the bus needs **arbitration**, **address decoding** and **flow control** that work correctly while several masters are active.
 
@@ -86,7 +86,7 @@ The design was verified with a **UVM testbench** made of an agent (driver, monit
 
 ---
 
-## 2. Project at a Glance
+⬜ 2. Project at a Glance
 
 | Item | Value |
 |---|---|
@@ -107,7 +107,7 @@ The design was verified with a **UVM testbench** made of an agent (driver, monit
 
 ---
 
-## 3. System Architecture
+⬜ 3. System Architecture
 
 The 4 masters sit on the left, the 8 slaves on the right, and the arbiter and interconnect sit between them. The arbiter decides which master is granted. The interconnect connects the granted master to the slave selected by the address.
 
@@ -137,9 +137,9 @@ flowchart LR
 
 ---
 
-## 4. Block-Level Design
+⬜ 4. Block-Level Design
 
-### 4.1 AHB Master
+⬜⬜ 4.1 AHB Master
 
 Each master is a small finite-state machine. It latches the command at `start`, requests the bus, drives the address and data phases beat by beat, and finishes by reporting `done`.
 
@@ -178,7 +178,7 @@ stateDiagram-v2
 - Constant `HPROT = 4'b0011`
 - Per-master `done`, `err` and `rdata` outputs
 
-### 4.2 Arbiter
+⬜⬜ 4.2 Arbiter
 
 <p align="center">
 <img src="AHB_FULL/AHB_Arbiter_Detailed_Block_Diagram.png" alt="Arbiter detailed block diagram" width="95%">
@@ -195,7 +195,7 @@ stateDiagram-v2
     FINISH --> IDLE : masters back in IDLE
 ```
 
-**How arbitration works**
+⬜ How arbitration works
 
 1. When `start_0` has launched the masters, the arbiter collects the valid requests and **locks them as one batch**. Masters blocked by a slave SPLIT mask are filtered out.
 2. In `SERVICING` it grants the bus to **one master at a time** (one-hot `HGRANT`, encoded `HMASTER`).
@@ -204,7 +204,7 @@ stateDiagram-v2
 
 **Why this is fair:** every requester in a batch is served exactly once per round, so no master can be starved by a higher-numbered one. Every round starts from the highest-numbered requester, so the order inside a round is deterministic.
 
-### 4.3 Interconnect
+⬜ 4.3 Interconnect
 
 The interconnect is the routing fabric. It has no state machine of its own, only multiplexers, a decoder and two pipeline registers.
 
@@ -218,7 +218,7 @@ The interconnect is the routing fabric. It has no state machine of its own, only
 | Mode distribution | The 16-bit `Mode_control` is split into eight 2-bit slave modes |
 | Retry acknowledge | The four per-master `Retry_ack` signals are OR-ed and sent to every slave |
 
-### 4.4 AHB Slave
+⬜ 4.4 AHB Slave
 
 <p align="center">
 <img src="AHB_FULL/AHB_Slave_Detailed_Block_Diagram.png" alt="AHB slave detailed block diagram" width="95%">
@@ -233,7 +233,7 @@ Each slave contains a **1 KB byte-addressed memory** (little-endian, indexed by 
 - **No wait states:** `HREADYOUT` is always high
 - **Response mode:** selected by `Mode_s*` (see [Section 7](#7-retry--split-flow-control))
 
-### 4.5 Vivado Block Design and Wrapper
+⬜ 4.5 Vivado Block Design and Wrapper
 
 The blocks are integrated in a Vivado block design with concatenation and slicing glue logic for the control vectors (`master_seection_0`, `Mode_control_0`). Vivado generates `AHB_FULL_4_M_8_Slaves_wrapper`, which is the DUT used by the testbench.
 
@@ -251,7 +251,7 @@ The blocks are integrated in a Vivado block design with concatenation and slicin
 
 ---
 
-## 5. Control Interface and Operating Principle
+⬜ 5. Control Interface and Operating Principle
 
 All masters are controlled through **one start pulse**. Before the pulse, the testbench sets which masters take part, and what each of them should do.
 
@@ -271,7 +271,7 @@ All masters are controlled through **one start pulse**. Before the pulse, the te
 | `finish_ack_0` | 1 | High when every selected master has finished |
 | `HPROT_0` | 4 | Protection control of the active master |
 
-**Completion handshake (used by the testbench and the UVM driver)**
+⬜Completion handshake (used by the testbench and the UVM driver)**
 
 ```systemverilog
 @(posedge HCLK_0); start_0 = 1'b1;                    // one-clock start pulse
@@ -294,9 +294,9 @@ sequenceDiagram
 
 ---
 
-## 6. Address Map and Burst Support
+⬜ 6. Address Map and Burst Support
 
-### Address format (16-bit master address)
+⬜ Address format (16-bit master address)
 
 | Bits | Meaning |
 |---|---|
@@ -318,7 +318,7 @@ sequenceDiagram
 
 Example: `16'h5020` is Slave 5, offset `0x020`.
 
-### Burst encoding
+⬜Burst encoding
 
 | `hburst` | Type | Beats | Address behaviour |
 |---|---|---|---|
@@ -333,7 +333,7 @@ Example: `16'h5020` is Slave 5, offset `0x020`.
 
 ---
 
-## 7. Retry / Split Flow Control
+⬜ 7. Retry / Split Flow Control
 
 Each slave has a 2-bit mode, set through `Mode_control_0`:
 
@@ -364,7 +364,7 @@ The master backs off, waits for a fixed window, acknowledges the retry, and rest
 
 ---
 
-## 8. Worked Example
+⬜ 8. Worked Example
 
 Setting `master_seection_0 = 4'b0111` means Masters 2, 1 and 0 take part. The target slave of each master comes from its address:
 
@@ -378,7 +378,7 @@ One `start_0` pulse is enough. The arbiter serves **M2 → S5**, then **M1 → S
 
 ---
 
-## 9. UVM Verification Environment
+⬜ 9. UVM Verification Environment
 
 <p align="center">
 <img src="AHB_FULL/ahb_full_4m8s_uvm_tb.png" alt="UVM testbench architecture for the AHB 4 master 8 slave system" width="100%">
@@ -402,7 +402,7 @@ AHB_UVM_Veri_TB (top module)
                 └── report_phase    : scoreboard, coverage, assertion report, final verdict
 ```
 
-### Components
+⬜ Components
 
 | Component | Description |
 |---|---|
@@ -414,7 +414,7 @@ AHB_UVM_Veri_TB (top module)
 | **Coverage** | Master × slave, slave × read/write, burst × read/write, slave mode × read/write, transfer size, outcome, all 15 master masks, number of active masters, retry counts |
 | **Report phase** | Prints scoreboard summary, coverage, assertion report, and a final **TEST PASSED / FAILED** verdict to the console |
 
-### Reference model rules
+⬜ Reference model rules
 
 - Masters are served in **descending order** of the selected bits
 - Write data advances by `wdata` on every beat (as in the master RTL)
@@ -425,9 +425,9 @@ AHB_UVM_Veri_TB (top module)
 
 ---
 
-## 10. Test Plan
+⬜ 10. Test Plan
 
-### Test cases (TC0 to TC15)
+⬜ Test cases (TC0 to TC15)
 
 | Test case | Scenario | What it proves |
 |---|---|---|
@@ -445,7 +445,7 @@ AHB_UVM_Veri_TB (top module)
 | **TC14** | Mixed burst types in one command | Different `hburst` per master |
 | **TC15** | Full-master stress with bursts | Worst-case interconnect load |
 
-### Reusable UVM sequences
+ ⬜Reusable UVM sequences
 
 | Sequence | Coverage |
 |---|---|
@@ -461,7 +461,7 @@ AHB_UVM_Veri_TB (top module)
 | `random_seq` | Constrained-random commands with read-back |
 | `neg_seq` | Hang and undefined-outcome corner cases, predicted by the scoreboard |
 
-### Available UVM tests
+⬜ Available UVM tests
 
 | Test | Purpose |
 |---|---|
@@ -473,9 +473,9 @@ Select a test with `+UVM_TESTNAME=<name>`.
 
 ---
 
-## 11. Assertions and Functional Coverage
+⬜ 11. Assertions and Functional Coverage
 
-### SystemVerilog assertions (in the interface)
+⬜ SystemVerilog assertions (in the interface)
 
 | Assertion | Property checked |
 |---|---|
@@ -490,7 +490,7 @@ Select a test with `+UVM_TESTNAME=<name>`.
 
 Cover properties count `done` pulses, `finish_ack` events, `err` cycles, and all-four-master starts. The report prints total, passed and failed checks with a pass percentage.
 
-### Functional coverage
+⬜ Functional coverage
 
 | Covergroup | Coverpoints and crosses |
 |---|---|
@@ -499,9 +499,9 @@ Cover properties count `done` pulses, `finish_ack` events, `err` cycles, and all
 
 ---
 
-## 12. Simulation Results
+⬜ 12. Simulation Results
 
-### Waveforms
+⬜ Waveforms
 
 <p align="center">
 <img src="AHB_FULL/Simmuletion_waveform1.png" alt="Simulation waveform 1" width="100%">
@@ -521,7 +521,7 @@ Cover properties count `done` pulses, `finish_ack` events, `err` cycles, and all
 <em>Figure 10: Simulation waveform 3</em>
 </p>
 
-### UVM console reports
+⬜ UVM console reports
 
 The `report_phase` prints a clear summary in the Vivado Tcl console: scoreboard totals, coverage, the assertion report, and the final verdict.
 
@@ -543,7 +543,7 @@ The `report_phase` prints a clear summary in the Vivado Tcl console: scoreboard 
 <em>Figure 13: UVM report (3 of 3)</em>
 </p>
 
-### Summary
+⬜ Summary
 
 | Metric | Result |
 |---|---|
@@ -554,8 +554,7 @@ The `report_phase` prints a clear summary in the Vivado Tcl console: scoreboard 
 | Functional coverage | **100%** |
 
 ---
-
-## 13. Synthesis
+⬜ 13. Synthesis
 
 The design synthesises in Vivado. The post-synthesis schematic below shows the netlist of the complete system.
 
@@ -567,7 +566,7 @@ The design synthesises in Vivado. The post-synthesis schematic below shows the n
 
 ---
 
-## 14. How to Run
+⬜ 14. How to Run
 
 ### Vivado xsim (command line)
 
@@ -577,14 +576,14 @@ xelab -L uvm -timescale 1ns/1ps work.AHB_UVM_Veri_TB -s ahb_sim -debug typical
 xsim  ahb_sim -testplusarg UVM_TESTNAME=test -runall
 ```
 
-### Vivado GUI
+⬜ Vivado GUI
 
 1. Add the RTL, the block-design wrapper, and `AHB_UVM_Veri_TB.sv` as simulation sources
 2. Set `AHB_UVM_Veri_TB` as the simulation top
 3. In **Simulation settings**, add `-L uvm` to the xsim compile and elaborate "more options"
 4. Run the simulation. The scoreboard, coverage and assertion reports appear in the Tcl console
 
-### Other simulators
+⬜ Other simulators
 
 ```bash
 # Questa
@@ -607,16 +606,16 @@ xrun -uvm -sv <files> +UVM_TESTNAME=test
 
 ---
 
-## 15. Problems Faced and Solutions
+ 15. Problems Faced and Solutions
 
-### Problem 1: Multi-master deadlocks and handshake stalls
+⬜ Problem 1: Multi-master deadlocks and handshake stalls
 
 | | |
 |---|---|
 | **What happened** | During high-concurrency stress tests (Test Cases 3 and 5, where several masters contested for the bus at once), masters occasionally locked up or hung indefinitely. The response handshake `finish_ack_0` fell out of sync with the internal state-machine releases of the design |
 | **Solution** | The driver synchronisation was restructured as a **polling handshake**. The driver pulses `start_0` for one clock, waits for `finish_ack_0` to go high, then waits for it to drop low before starting the next transaction. This replaced hard-coded cycle counts and keeps the testbench cycle-accurate with the design |
 
-### Problem 2: Long multi-beat bursts timing out
+⬜ Problem 2: Long multi-beat bursts timing out
 
 | | |
 |---|---|
@@ -625,7 +624,7 @@ xrun -uvm -sv <files> +UVM_TESTNAME=test
 
 ---
 
-## 16. Engineering Notes and Known Limitations
+⬜ 16. Engineering Notes and Known Limitations
 
 These points come from reading the RTL while building the reference model. They describe how the current implementation behaves and are a good starting list for anyone extending the design.
 
@@ -656,7 +655,7 @@ These points come from reading the RTL while building the reference model. They 
 
 ---
 
-## 18. Repository Structure
+⬜18. Repository Structure
 
 ```
 .
@@ -685,13 +684,13 @@ These points come from reading the RTL while building the reference model. They 
 
 ---
 
-## 19. About the Author
+⬜ 19. About the Author
 
 <div align="center">
 
-### Rabisankar Maity
+⬜ Rabisankar Maity
 
-**RTL Design Engineer | M.Tech VLSI @ IIT Guwahati '26 (GATE AIR 318)**
+⬜RTL Design Engineer | M.Tech VLSI @ IIT Guwahati '26 (GATE AIR 318)**
 
 Verilog • SystemVerilog • FPGA • SoC PL+PS Integration
 Creator of a Full VGG-16 Hardware Accelerator and a RISC-V Core
