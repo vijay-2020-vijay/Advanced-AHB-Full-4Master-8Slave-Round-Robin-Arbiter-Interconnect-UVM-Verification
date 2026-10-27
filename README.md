@@ -11,6 +11,18 @@
 ![Coverage](https://img.shields.io/badge/Functional%20Coverage-100%25-brightgreen)
 ![SVA](https://img.shields.io/badge/Assertions-1542%20checks%20%7C%200%20fails-brightgreen)
 
+<div align="center">
+
+# 📥 [**DOWNLOAD FULL PROJECT**](https://drive.google.com/drive/folders/1PzCzIiuY8I9nX2K5JqRZ5S79b1RLSWTV?usp=sharing)
+
+[![Download](https://img.shields.io/badge/Google%20Drive-DOWNLOAD%20NOW-brightgreen?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/1PzCzIiuY8I9nX2K5JqRZ5S79b1RLSWTV?usp=sharing)
+
+</div>
+
+
+
+
+
 <p>
 <img src="AHB_FULL/AHB_Full_TOP_4M_8S.png" alt="AHB Full 4 Master 8 Slave top level block diagram" width="95%">
 </p>
