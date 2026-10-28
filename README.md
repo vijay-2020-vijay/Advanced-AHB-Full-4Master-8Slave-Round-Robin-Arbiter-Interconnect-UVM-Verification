@@ -78,7 +78,7 @@ This project implements that environment as an **AMBA AHB-Full multi-master, mul
 - **4 masters** on one side and **8 memory-mapped slaves** on the other
 - An **arbiter** that decides which master owns the bus
 - An **interconnect** that multiplexes master signals, decodes the target slave from the address, and routes responses back
-- **Burst transfers** of up to 35 beats and more, plus wrapping bursts
+- **Burst transfers** of up to 200+ beats and more, plus wrapping bursts
 - **Retry / Split** flow control, where a busy slave tells the master to back off and try again
 - A **single-pulse control interface**: one `start_0` pulse launches the whole multi-master schedule, and `finish_ack_0` reports completion
 
